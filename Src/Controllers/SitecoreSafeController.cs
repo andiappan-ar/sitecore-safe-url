@@ -4,10 +4,15 @@ namespace Sitecore.Law.Controllers
 {
     public class LawController : Controller
     {
-        // GET: Law
         public ActionResult Setup()
         {
             return View();
+        }
+
+        [HttpPost]
+        public bool ValidateRecaptcha()
+        {
+            return false;
         }
     }
 }

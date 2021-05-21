@@ -12,8 +12,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sitecore.Law</RootNamespace>
-    <AssemblyName>Sitecore.Law</AssemblyName>
+    <RootNamespace>Sitecore.Safe</RootNamespace>
+    <AssemblyName>Sitecore.Safe</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -46,9 +46,31 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Sitecore.Kernel, Version=16.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Sitecore.Kernel.10.1.0\lib\net48\Sitecore.Kernel.dll</HintPath>
+    </Reference>
+    <Reference Include="Sitecore.Logging, Version=14.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Sitecore.Logging.10.1.0\lib\net48\Sitecore.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="sysglobl" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Linq" />
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.InteropServices" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Threading.Thread" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -117,15 +139,29 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\LawController.cs" />
+    <Compile Include="Common\Helper\SitecoreSafeSettings.cs" />
+    <Compile Include="Common\Helper\SitecoreHelper.cs" />
+    <Compile Include="Common\Helper\Utility.cs" />
+    <Compile Include="Common\SitecoreSafeConstant.cs" />
+    <Compile Include="Controllers\SitecoreSafeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Logger\SitecoreSafeLog.cs" />
+    <Compile Include="Models\CaptchaResponse.cs" />
+    <Compile Include="Models\SitecoreSafeRoot.cs" />
+    <Compile Include="Processors\QueryString.cs" />
+    <Compile Include="Processors\ResponseHeaders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\QueryString\ProcessUrl.cs" />
+    <Compile Include="Security\Recaptcha\GoogleRecaptchaHandler.cs" />
+    <Compile Include="Security\SecurityHeader\ProcessHeader.cs" />
+    <Compile Include="Security\Validation\SafeValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <None Include="Settings\Sitecore-Law.json" />
+    <Content Include="App_Config\Modules\Sitecore_Safe\Sitecore.Safe.config" />
+    <None Include="Common\Settings\Sitecore-SafeUrl.json" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -135,15 +171,10 @@
     </Content>
     <Content Include="Views\Web.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Common\" />
-    <Folder Include="Models\" />
-    <Folder Include="Security\QueryString\" />
-    <Folder Include="Security\SecurityHeader\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
-    <Content Include="Views\Law\Setup.cshtml" />
+    <Content Include="Views\SitecoreSafe\Setup.cshtml" />
     <Content Include="Views\Layout\MainLayout.cshtml" />
   </ItemGroup>
   <PropertyGroup>

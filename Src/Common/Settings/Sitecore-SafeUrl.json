@@ -1,0 +1,96 @@
+﻿{
+  "Product": {
+    "SitecoreVersion": "10.1"
+  },
+  "SitecoreSafeUrl": {
+    "Configurations": {
+
+    },
+    "Modules": {
+      "QueryString": {
+        "Common": {
+          "Urls": [ "https://xp0cm.localhost/" ],
+          "ThreatCharacters": "<>/",
+          "ThreatPageId": ""
+        },
+        "AllSites": [
+          {
+            "Url": "https://xp0cm.localhost/",
+            "ThreatCharacters": "<>/",
+            "ThreatPageId": ""
+          },
+          {
+            "Url": "https://xp0cm1.localhost/",
+            "ThreatCharacters": "<>/",
+            "ThreatPageId": ""
+          }
+        ]
+      },
+      "SecurityHeader": {
+        "Common": {
+          "Urls": [ "https://xp0cm.localhost/" ],
+          "Headers": [
+            {
+              "HeaderName": "value",
+              "HeaderValue": "value"
+            },
+            {
+              "HeaderName": "value",
+              "HeaderValue": "value"
+            }
+          ]
+        },
+        "AllSites": [
+          {
+            "Url": "https://xp0cm.localhost/",
+            "Headers": [
+              {
+                "HeaderName": "value",
+                "HeaderValue": "value"
+              },
+              {
+                "HeaderName": "value",
+                "HeaderValue": "value"
+              }
+            ]
+          },
+          {
+            "Url": "https://xp0cm1.localhost/",
+            "Headers": [
+              {
+                "HeaderName": "value",
+                "HeaderValue": "value"
+              },
+              {
+                "HeaderName": "value",
+                "HeaderValue": "value"
+              }
+            ]
+          }
+        ]
+      },
+      "InvalidCharValidator": [
+        {
+          "key": "key",
+          "value": "value",
+          "ErrorMessage": "ErrorMessage"
+        }
+      ],
+      "Recaptcha": [
+        {
+          "Name": "Visible",
+          "Url": "",
+          "ClientKey": "",
+          "SecretKey": ""
+        },
+        {
+          "Name": "InVisible",
+          "Url": "",
+          "ClientKey": "",
+          "SecretKey": ""
+        }
+      ]
+    }
+
+  }
+}
