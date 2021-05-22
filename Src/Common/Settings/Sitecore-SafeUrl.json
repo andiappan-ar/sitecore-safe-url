@@ -9,26 +9,26 @@
     "Modules": {
       "QueryString": {
         "Common": {
-          "Urls": [ "https://xp0cm.localhost/" ],
-          "ThreatCharacters": "<>/",
-          "ThreatPageId": ""
+          "Urls": [ "https://arsc.dev.local/" ],
+          "ThreatCharacters": "<>",
+          "ThreatPageId": "{76B024D8-0F6A-4A46-B588-E5E6BE275E42}"
         },
         "AllSites": [
           {
-            "Url": "https://xp0cm.localhost/",
-            "ThreatCharacters": "<>/",
-            "ThreatPageId": ""
+            "Url": "https://arsc.dev.local/",
+            "ThreatCharacters": "*",
+            "ThreatPageId": "{93947600-304A-4935-A49D-199D6AB2D7C9}"
           },
           {
             "Url": "https://xp0cm1.localhost/",
-            "ThreatCharacters": "<>/",
+            "ThreatCharacters": "<>",
             "ThreatPageId": ""
           }
         ]
       },
       "SecurityHeader": {
         "Common": {
-          "Urls": [ "https://xp0cm.localhost/" ],
+          "Urls": [ "https://arsc.dev.local/" ],
           "Headers": [
             {
               "HeaderName": "value",
@@ -42,7 +42,7 @@
         },
         "AllSites": [
           {
-            "Url": "https://xp0cm.localhost/",
+            "Url": "https://arsc.dev.local/",
             "Headers": [
               {
                 "HeaderName": "value",

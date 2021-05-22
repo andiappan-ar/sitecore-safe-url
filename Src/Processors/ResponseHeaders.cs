@@ -12,8 +12,7 @@ namespace Sitecore.Safe.Processors
     {
         public override void Process(HttpRequestArgs args)
         {
-            // Skip for non site request
-            if (Context.Item == null || Context.Database == null)
+            if (!SitecoreHelper.IsValidSiteForPipeline())
             {
                 return;
             }

@@ -1,10 +1,13 @@
-﻿using Sitecore.Data;
+﻿using Sitecore.Configuration;
+using Sitecore.Data;
 using Sitecore.Pipelines.HttpRequest;
+using Sitecore.Safe.Common;
 using Sitecore.Safe.Common.Helper;
 using Sitecore.Safe.Models;
 using Sitecore.Safe.Security.QueryString;
 using System;
 using System.Web;
+using System.Linq;
 
 namespace Sitecore.Safe.Processors
 {
@@ -12,8 +15,8 @@ namespace Sitecore.Safe.Processors
     {
         public override void Process(HttpRequestArgs args)
         {
-            // Skip for non site request
-            if (Context.Item == null || Context.Database == null)
+
+            if (!SitecoreHelper.IsValidSiteForPipeline())
             {
                 return;
             }
@@ -23,7 +26,7 @@ namespace Sitecore.Safe.Processors
             Uri currentUrl = HttpContext.Current.Request.Url;
 
             // Is current url configured in common
-            isThreat = (SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.QueryString.Common != null &&
+            isThreat = (SitecoreSafeSettings.JsonSettings != null && SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.QueryString.Common != null &&
                 SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.QueryString.Common.Urls.Count > 0 &&
                 Utility.IsUrlPresentInCollection(HttpContext.Current.Request.Url, SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.QueryString.Common.Urls) &&
                 ProcessUrl.IsThreatUrl(currentUrl, SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.QueryString.Common.ThreatCharacters)

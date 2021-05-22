@@ -10,9 +10,11 @@ namespace Sitecore.Safe.Common
         /// <summary>
         /// Sitecore constant
         /// </summary>
+        public const string IgnoreSites =  "sitecore_safe_sitesToIgnore";
         public const string RootItem = "sitecore_safe_root_item";
-        public const string RootItemJsonField = "RootJson";
+        public const string RootItemJsonField = "SitecoreSafeSettingsJson";
         public const string SitecoreMasterDB = "master";
+        
 
         /// <summary>
         /// Log
