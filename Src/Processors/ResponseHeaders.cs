@@ -22,15 +22,17 @@ namespace Sitecore.Safe.Processors
             // Assign header with values
             Action<SitecoreSafeSecurityHeader> setHeader = (header) =>
             {               
-                if (header.IsAppend)
+                if(header.IsAppend)
                 {
-                    args.HttpContext.Response.Headers[header.HeaderName] += header.HeaderValue;
-                }
-
-                if (header.IsOverWrite || string.IsNullOrEmpty(args.HttpContext.Response.Headers[header.HeaderName]))
+                    var appenddHeader = args.HttpContext.Response.Headers[header.HeaderName];
+                    args.HttpContext.Response.Headers[header.HeaderName] = 
+                    (string.IsNullOrEmpty(appenddHeader))? header.HeaderValue : string.Concat(appenddHeader, header.HeaderValue);
+                }else
                 {
                     args.HttpContext.Response.Headers[header.HeaderName] = header.HeaderValue;
                 }
+
+                
 
             };
 

@@ -1,5 +1,6 @@
 ﻿using Sitecore.Safe.Logger;
 using System;
+using System.Web;
 
 namespace Sitecore.Safe.Security.QueryString
 {
@@ -11,7 +12,7 @@ namespace Sitecore.Safe.Security.QueryString
 
             try
             {
-                foreach (char @char in uri.PathAndQuery.ToLower())
+                foreach (char @char in HttpUtility.UrlDecode(uri.PathAndQuery.ToLower()))
                 {
                     if (threatCharacters.IndexOf(@char) != -1)
                     {

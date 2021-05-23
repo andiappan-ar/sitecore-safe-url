@@ -76,7 +76,6 @@ namespace Sitecore.Safe.Models
     {
         public string HeaderName { get; set; }
         public string HeaderValue { get; set; }
-        public bool IsOverWrite { get; set; }
         public bool IsAppend { get; set; }
     }
 

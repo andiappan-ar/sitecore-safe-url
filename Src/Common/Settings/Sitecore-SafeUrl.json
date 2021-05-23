@@ -31,12 +31,22 @@
           "Urls": [ "https://arsc.dev.local/" ],
           "Headers": [
             {
-              "HeaderName": "value",
-              "HeaderValue": "value"
+              "HeaderName": "Content-Security-Policy",
+              "HeaderValue": "default-src 'self'; img-src https://*;",
+              
+              "IsAppend": false
             },
             {
-              "HeaderName": "value",
-              "HeaderValue": "value"
+              "HeaderName": "X-Frame-Options",
+              "HeaderValue": "SAMEORIGIN1",
+              
+              "IsAppend": false
+            },
+            {
+              "HeaderName": "Strict-Transport-Security",
+              "HeaderValue": "max-age=31536000; includeSubDomains; preload",
+              
+              "IsAppend": false
             }
           ]
         },
@@ -45,12 +55,19 @@
             "Url": "https://arsc.dev.local/",
             "Headers": [
               {
-                "HeaderName": "value",
-                "HeaderValue": "value"
+                "HeaderName": "Content-Security-Policy",
+                "HeaderValue": "child-src 'none';",                
+                "IsAppend": true
               },
               {
-                "HeaderName": "value",
-                "HeaderValue": "value"
+                "HeaderName": "X-Frame-Options",
+                "HeaderValue": "SAMEORIGIN",
+                "IsAppend": false
+              },
+              {
+                "HeaderName": "X-Content-Type-Options",
+                "HeaderValue": "nosniff",                
+                "IsAppend": false
               }
             ]
           },
