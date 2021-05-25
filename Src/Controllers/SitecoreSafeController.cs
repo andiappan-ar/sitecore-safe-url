@@ -1,5 +1,6 @@
 ﻿using Sitecore.Mvc.Controllers;
 using Sitecore.Safe.Models.Test;
+using Sitecore.Safe.Security.Recaptcha;
 using System.Web.Mvc;
 
 namespace Sitecore.Safe.Controllers
@@ -14,7 +15,9 @@ namespace Sitecore.Safe.Controllers
         [HttpPost]
         public bool TestForm(TestForm testForm)
         {
-            return (ModelState.IsValid);
+            bool isMOdelvalid = ModelState.IsValid;
+            bool recapValidation = GoogleRecaptchaHandler.ValidateGoogleRecaptchaResponse(testForm.RecaptchaResponse, "6LcG3e4aAAAAACx_-RIykooH2mSwFoxFz2MVo2cz", "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}");
+            return (isMOdelvalid && recapValidation);
         }
     }
 }

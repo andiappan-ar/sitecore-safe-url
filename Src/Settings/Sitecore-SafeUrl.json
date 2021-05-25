@@ -10,7 +10,7 @@
       "QueryString": {
         "Common": [
           {
-            "Urls": [ "https://arsc.dev.local/", "https://arsc1.dev.local/" ],
+            "Urls": [ "https://arsc.dev.local1/", "https://arsc1.dev.local/" ],
             "ThreatCharacters": "<>",
             "ThreatPageId": "{76B024D8-0F6A-4A46-B588-E5E6BE275E42}"
           },
@@ -22,7 +22,7 @@
         ],
         "AllSites": [
           {
-            "Url": "https://arsc.dev.local/",
+            "Url": "https://arsc.dev.local1/",
             "ThreatCharacters": "*",
             "ThreatPageId": "{93947600-304A-4935-A49D-199D6AB2D7C9}"
           },
@@ -36,18 +36,18 @@
       "SecurityHeader": {
         "Common": [
           {
-            "Urls": [ "https://arsc.dev.local/", "https://arsc1.dev.local/" ],
+            "Urls": [ "https://arsc.dev.local1/", "https://arsc1.dev.local/" ],
             "Headers": [
               {
                 "HeaderName": "Content-Security-Policy",
-                "HeaderValue": "default-src 'self'; img-src https://*;",
+                "HeaderValue": "default-src 'self'; script-src 'nonce-{NONCE}'; img-src www.gstatic.com; frame-src www.google.com; object-src 'none'; base-uri 'none';",
 
                 "IsAppend": false
               }
             ]
           },
           {
-            "Urls": [ "https://arsc.dev.local/" ],
+            "Urls": [ "https://arsc.dev.local1/" ],
             "Headers": [
               {
                 "HeaderName": "X-Frame-Options",
@@ -66,7 +66,7 @@
         ],
         "AllSites": [
           {
-            "Url": "https://arsc.dev.local/",
+            "Url": "https://arsc.dev.local1/",
             "Headers": [
               {
                 "HeaderName": "Content-Security-Policy",

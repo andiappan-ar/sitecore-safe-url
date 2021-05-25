@@ -9,5 +9,6 @@ namespace Sitecore.Safe.Models.Test
 
         [SafeCharMatchValidator("scriptInjection")]
         public string LastName { get; set; }
+        public string RecaptchaResponse { get; set; }
     }
 }
