@@ -8,11 +8,18 @@
     },
     "Modules": {
       "QueryString": {
-        "Common": {
-          "Urls": [ "https://arsc.dev.local/" ],
-          "ThreatCharacters": "<>",
-          "ThreatPageId": "{76B024D8-0F6A-4A46-B588-E5E6BE275E42}"
-        },
+        "Common": [
+          {
+            "Urls": [ "https://arsc.dev.local/", "https://arsc1.dev.local/" ],
+            "ThreatCharacters": "<>",
+            "ThreatPageId": "{76B024D8-0F6A-4A46-B588-E5E6BE275E42}"
+          },
+          {
+            "Urls": [ "https://arsc2.dev.local/" ],
+            "ThreatCharacters": "<>",
+            "ThreatPageId": "{76B024D8-0F6A-4A46-B588-E5E6BE275E42}"
+          }
+        ],
         "AllSites": [
           {
             "Url": "https://arsc.dev.local/",
@@ -27,36 +34,43 @@
         ]
       },
       "SecurityHeader": {
-        "Common": {
-          "Urls": [ "https://arsc.dev.local/" ],
-          "Headers": [
-            {
-              "HeaderName": "Content-Security-Policy",
-              "HeaderValue": "default-src 'self'; img-src https://*;",
-              
-              "IsAppend": false
-            },
-            {
-              "HeaderName": "X-Frame-Options",
-              "HeaderValue": "SAMEORIGIN1",
-              
-              "IsAppend": false
-            },
-            {
-              "HeaderName": "Strict-Transport-Security",
-              "HeaderValue": "max-age=31536000; includeSubDomains; preload",
-              
-              "IsAppend": false
-            }
-          ]
-        },
+        "Common": [
+          {
+            "Urls": [ "https://arsc.dev.local/", "https://arsc1.dev.local/" ],
+            "Headers": [
+              {
+                "HeaderName": "Content-Security-Policy",
+                "HeaderValue": "default-src 'self'; img-src https://*;",
+
+                "IsAppend": false
+              }
+            ]
+          },
+          {
+            "Urls": [ "https://arsc.dev.local/" ],
+            "Headers": [
+              {
+                "HeaderName": "X-Frame-Options",
+                "HeaderValue": "SAMEORIGIN1",
+
+                "IsAppend": false
+              },
+              {
+                "HeaderName": "Strict-Transport-Security",
+                "HeaderValue": "max-age=31536000; includeSubDomains; preload",
+
+                "IsAppend": false
+              }
+            ]
+          }
+        ],
         "AllSites": [
           {
             "Url": "https://arsc.dev.local/",
             "Headers": [
               {
                 "HeaderName": "Content-Security-Policy",
-                "HeaderValue": "child-src 'none';",                
+                "HeaderValue": "child-src 'none';",
                 "IsAppend": true
               },
               {
@@ -66,7 +80,7 @@
               },
               {
                 "HeaderName": "X-Content-Type-Options",
-                "HeaderValue": "nosniff",                
+                "HeaderValue": "nosniff",
                 "IsAppend": false
               }
             ]
@@ -86,13 +100,28 @@
           }
         ]
       },
-      "InvalidCharValidator": [
-        {
-          "key": "key",
-          "value": "value",
-          "ErrorMessage": "ErrorMessage"
-        }
-      ],
+      "SafeValidationAttributes": {
+        "Regex": [
+          {
+            "key": "AlphaNumeric",
+            "value": "^[A-Z][a-zA-Z]*$",
+            "ErrorMessage": "AlphaNumeric ErrorMessage"
+          }
+        ],
+        "CharacterMatch": [
+          {
+            "key": "scriptInjection",
+            "value": "<>",
+            "ErrorMessage": "scriptInjection ErrorMessage"
+          },
+          {
+            "key": "sqlInjection",
+            "value": "value",
+            "ErrorMessage": "sqlInjection ErrorMessage"
+          }
+        ]
+
+      },
       "Recaptcha": [
         {
           "Name": "Visible",

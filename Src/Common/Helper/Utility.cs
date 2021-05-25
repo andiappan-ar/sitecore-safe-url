@@ -46,13 +46,36 @@ namespace Sitecore.Safe.Common.Helper
             return result;
         }
 
-        public static UrlKeyCollection GetItemByUrl<T>(Uri sourceUrl, List<T> itemList) where T: UrlKeyCollection
+        public static IUrlKeyCollection GetItemByUrl<T>(Uri sourceUrl, List<T> itemList) where T: IUrlKeyCollection
         {
-            UrlKeyCollection result = null;
+            IUrlKeyCollection result = null;
 
             try
             {
                 result = itemList.Where(x => IsUrlAndPortMatching(sourceUrl, x.Url)).FirstOrDefault();
+            }
+            catch (Exception error)
+            {
+                SitecoreSafeLog.Error(error);
+            }
+
+            return result;
+        }
+
+        public static List<IUrlListKeyCollection> GetItemCollectionByUrlCollection<T>(Uri sourceUrl, List<T> itemList) where T : IUrlListKeyCollection
+        {
+            List<IUrlListKeyCollection> result = new List<IUrlListKeyCollection>();
+
+            try
+            {
+                itemList.ForEach(urlGroup=> {
+                    var isUrlMatched = urlGroup.Urls.Any(x => IsUrlAndPortMatching(sourceUrl, x));
+                    if (isUrlMatched)
+                    {
+                        result.Add(urlGroup);
+                    }                    
+                });
+                
             }
             catch (Exception error)
             {

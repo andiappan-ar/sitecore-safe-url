@@ -1,8 +1,10 @@
-﻿using System.Web.Mvc;
+﻿using Sitecore.Mvc.Controllers;
+using Sitecore.Safe.Models.Test;
+using System.Web.Mvc;
 
-namespace Sitecore.Law.Controllers
+namespace Sitecore.Safe.Controllers
 {
-    public class LawController : Controller
+    public class SitecoreSafeController : SitecoreController
     {
         public ActionResult Setup()
         {
@@ -10,9 +12,9 @@ namespace Sitecore.Law.Controllers
         }
 
         [HttpPost]
-        public bool ValidateRecaptcha()
+        public bool TestForm(TestForm testForm)
         {
-            return false;
+            return (ModelState.IsValid);
         }
     }
 }

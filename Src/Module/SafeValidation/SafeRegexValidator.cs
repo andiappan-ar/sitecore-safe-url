@@ -3,14 +3,15 @@ using Sitecore.Safe.Settings;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.RegularExpressions;
 
-namespace Sitecore.Safe.Security.Validation
+namespace Sitecore.Safe.Security.SafeValidation
 {
-    public class SafeValidator : ValidationAttribute
+    public class SafeRegexValidator : ValidationAttribute
     {
         private string keyAttribute = string.Empty;
-        
-        public SafeValidator(string key)
+
+        public SafeRegexValidator(string key)
         {
             keyAttribute = key;
         }
@@ -24,21 +25,14 @@ namespace Sitecore.Safe.Security.Validation
             {
                 string valStr = value.ToString();
 
-                InvalidCharValidator invalidCharValidator = SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.InvalidValidator
+                SafeValidationAttribute regexAttr = SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.SafeValidationAttributes.Regex
                     .Where(x => string.Equals(x.key, keyAttribute, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
 
-                if (invalidCharValidator != null)
+                if (regexAttr != null && !Regex.Match(valStr, regexAttr.value).Success)
                 {
-                    foreach (char @char in valStr)
-                    {
-                        if (invalidCharValidator.value.IndexOf(@char) != -1)
-                        {
-                            isInvalid = true;
-                            isInvalidErr = invalidCharValidator.ErrorMessage;
-                            break;
-                        }
-                    }
-                }               
+                    isInvalid = true;
+                    isInvalidErr = regexAttr.ErrorMessage;
+                }
 
             }
 

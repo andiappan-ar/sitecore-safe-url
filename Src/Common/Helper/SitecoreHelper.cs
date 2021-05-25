@@ -24,7 +24,7 @@ namespace Sitecore.Safe.Common.Helper
             try
             {
                 //Request to perform when site is not Equal to sitecore default sites. (EDITED)
-                result = (Sitecore.Context.PageMode.IsNormal && !SitesToIgnoreSettings.Contains(Context.Site.Name.ToLowerInvariant()));
+                result = (Context.Site!=null && Sitecore.Context.PageMode.IsNormal && !SitesToIgnoreSettings.Contains(Context.Site.Name.ToLowerInvariant()));
                 
             }
             catch (Exception error)

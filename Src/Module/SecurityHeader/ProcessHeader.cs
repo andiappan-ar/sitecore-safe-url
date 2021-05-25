@@ -4,6 +4,8 @@ using Sitecore.Safe.Logger;
 using Sitecore.Safe.Models;
 using Sitecore.Safe.Settings;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 
 namespace Sitecore.Safe.Security.SecurityHeader
@@ -16,46 +18,40 @@ namespace Sitecore.Safe.Security.SecurityHeader
 
             try
             {
-                Uri currentUrl = HttpContext.Current.Request.Url;
-
-                // Assign header with values
-                Action<SitecoreSafeSecurityHeader> setHeader = (header) =>
+                if (SitecoreSafeSettings.JsonSettings != null)
                 {
-                    if (header.IsAppend)
+                    Uri currentUrl = HttpContext.Current.Request.Url;
+
+                    // Assign header with values
+                    Action<List<SitecoreSafeSecurityHeader>> setHeader = (headerList) =>
+                    {                        
+                            headerList?.Where(x => !string.IsNullOrEmpty(x.HeaderName)).ToList().ForEach(header =>
+                            {
+                                if (header.IsAppend)
+                                {
+                                    var appenddHeader = args.HttpContext.Response.Headers[header.HeaderName];
+                                    args.HttpContext.Response.Headers[header.HeaderName] =
+                                    (string.IsNullOrEmpty(appenddHeader)) ? header.HeaderValue : string.Concat(appenddHeader, header.HeaderValue);
+                                }
+                                else
+                                {
+                                    args.HttpContext.Response.Headers[header.HeaderName] = header.HeaderValue;
+                                }
+                            });
+                    };                    
+
+                    // Common
+                    if (SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.SecurityHeader.Common != null)
                     {
-                        var appenddHeader = args.HttpContext.Response.Headers[header.HeaderName];
-                        args.HttpContext.Response.Headers[header.HeaderName] =
-                        (string.IsNullOrEmpty(appenddHeader)) ? header.HeaderValue : string.Concat(appenddHeader, header.HeaderValue);
-                    }
-                    else
-                    {
-                        args.HttpContext.Response.Headers[header.HeaderName] = header.HeaderValue;
-                    }
+                        List<SecurityHeaderCommon> matchedUrlCommonHeaders = Utility.GetItemCollectionByUrlCollection<SecurityHeaderCommon>(currentUrl, SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.SecurityHeader.Common).Cast<SecurityHeaderCommon>().ToList();
+                        matchedUrlCommonHeaders.ForEach(x => {setHeader(x.Headers);});
+                    }                    
 
-
-
-                };
-
-                // Common
-                if (Utility.IsUrlPresentInCollection(currentUrl, SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.SecurityHeader.Common.Urls))
-                {
-                    SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.SecurityHeader.Common.Headers.ForEach(x =>
-                    {
-                        setHeader(x);
-                    });
+                    // Get all settings specific to matched Domain
+                    SecurityHeaderAllSite matchedUrlHeaders = (SecurityHeaderAllSite)Utility.GetItemByUrl<SecurityHeaderAllSite>(currentUrl, SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.SecurityHeader.AllSites);
+                    setHeader(matchedUrlHeaders.Headers);                    
                 }
-
-                // Get all settings specific to matched Domain
-
-                SecurityHeaderAllSite matchedUrlSecurityHeader =
-                       (SecurityHeaderAllSite)Utility.GetItemByUrl<SecurityHeaderAllSite>(currentUrl, SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.SecurityHeader.AllSites);
-                if (matchedUrlSecurityHeader != null)
-                {
-                    matchedUrlSecurityHeader.Headers.ForEach(x =>
-                    {
-                        setHeader(x);
-                    });
-                }
+                
             }
             catch (Exception error)
             {

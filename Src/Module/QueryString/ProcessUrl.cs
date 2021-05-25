@@ -4,13 +4,15 @@ using Sitecore.Safe.Models;
 using Sitecore.Safe.Models.Module;
 using Sitecore.Safe.Settings;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Web;
 
 namespace Sitecore.Safe.Security.QueryString
 {
     public static class ProcessUrl
     {
-        public static bool IsUrlConfigured(Uri uri, string threatCharacters)
+        public static bool IsUrlContainsThreat(Uri uri, string threatCharacters)
         {
             bool result = false;
 
@@ -42,32 +44,35 @@ namespace Sitecore.Safe.Security.QueryString
 
             try
             {
-                
-                Uri currentUrl = HttpContext.Current.Request.Url;
-
-                // Is current url configured in common
-                result.IsThreat = (SitecoreSafeSettings.JsonSettings != null && SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.QueryString.Common != null &&
-                    SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.QueryString.Common.Urls.Count > 0 &&
-                    Utility.IsUrlPresentInCollection(HttpContext.Current.Request.Url, SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.QueryString.Common.Urls) &&
-                    ProcessUrl.IsUrlConfigured(currentUrl, SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.QueryString.Common.ThreatCharacters)
-                    );
-                result.ThreatPageId = (result.IsThreat) ? SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.QueryString.Common.ThreatPageId : result.ThreatPageId;
-
-
-                if (!result.IsThreat)
+                if(SitecoreSafeSettings.JsonSettings != null)
                 {
-                    // Threat against domain
-                    QueryStringAllSite matchedUrlThreat =
-                        (QueryStringAllSite)Utility.GetItemByUrl<QueryStringAllSite>(currentUrl, SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.QueryString.AllSites);
+                    Uri currentUrl = HttpContext.Current.Request.Url;
 
-                    if (matchedUrlThreat != null &&
-                        ProcessUrl.IsUrlConfigured(currentUrl, SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.QueryString.Common.ThreatCharacters)
-                        )
+                    Action<IQueryStringThreat> setThreat = (threatObject) => {
+                        if (threatObject != null && !string.IsNullOrEmpty(threatObject.ThreatCharacters) && ProcessUrl.IsUrlContainsThreat(currentUrl, threatObject.ThreatCharacters))
+                        {
+                            result.IsThreat = true;
+                            result.ThreatPageId = threatObject.ThreatPageId;
+                        }
+                    };
+
+                    // Is ( current URL configured in common && current URL contains threat character ) 
+                    if (SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.QueryString.Common != null)
+                    {                       
+                        List<QueryStringCommon> matchedUrlCommonThreats = Utility.GetItemCollectionByUrlCollection<QueryStringCommon>(currentUrl,SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.QueryString.Common).Cast<QueryStringCommon>().ToList();
+                        matchedUrlCommonThreats.ForEach(x=> {setThreat(x);});
+                    }
+
+                    // Skip the domain specific check - If threat available in common
+                    if (!result.IsThreat)
                     {
-                        result.IsThreat = true;
-                        result.ThreatPageId = matchedUrlThreat.ThreatPageId;
+                        // Threat against domain
+                        QueryStringAllSite matchedUrlThreat = (QueryStringAllSite)Utility.GetItemByUrl<QueryStringAllSite>(currentUrl, SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.QueryString.AllSites);
+                        setThreat(matchedUrlThreat);
                     }
                 }
+
+                
             }
             catch (Exception error)
             {
