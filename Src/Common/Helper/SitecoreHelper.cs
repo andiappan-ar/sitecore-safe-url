@@ -1,8 +1,8 @@
-﻿using Sitecore.Configuration;
-using Sitecore.Safe.Logger;
+﻿using Sitecore.Safe.Logger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sitecore.Configuration;
 
 namespace Sitecore.Safe.Common.Helper
 {
@@ -11,7 +11,7 @@ namespace Sitecore.Safe.Common.Helper
         private static List<string> SitesToIgnoreSettings = null;
         static SitecoreHelper()
         {
-            SitesToIgnoreSettings = Settings.GetSetting(SitecoreSafeConstant.IgnoreSites, string.Empty)
+            SitesToIgnoreSettings = Sitecore.Configuration.Settings.GetSetting(SitecoreSafeConstant.IgnoreSites, string.Empty)
                 .ToLowerInvariant()
                 .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                 .ToList<string>();

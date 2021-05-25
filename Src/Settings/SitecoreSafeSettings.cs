@@ -1,11 +1,12 @@
 ﻿using Newtonsoft.Json;
 using Sitecore.Data;
 using Sitecore.Data.Items;
+using Sitecore.Safe.Common;
 using Sitecore.Safe.Logger;
 using Sitecore.Safe.Models;
 using System;
 
-namespace Sitecore.Safe.Common.Helper
+namespace Sitecore.Safe.Settings
 {
     public static class SitecoreSafeSettings
     {

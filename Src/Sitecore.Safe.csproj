@@ -142,7 +142,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Common\Helper\SitecoreSafeSettings.cs" />
+    <Compile Include="Models\Module\QueryStringThreat.cs" />
+    <Compile Include="Settings\SitecoreSafeSettings.cs" />
     <Compile Include="Common\Helper\SitecoreHelper.cs" />
     <Compile Include="Common\Helper\Utility.cs" />
     <Compile Include="Common\SitecoreSafeConstant.cs" />
@@ -156,15 +157,18 @@
     <Compile Include="Processors\QueryString.cs" />
     <Compile Include="Processors\ResponseHeaders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\QueryString\ProcessUrl.cs" />
-    <Compile Include="Security\Recaptcha\GoogleRecaptchaHandler.cs" />
-    <Compile Include="Security\SecurityHeader\ProcessHeader.cs" />
-    <Compile Include="Security\Validation\SafeValidator.cs" />
+    <Compile Include="Module\QueryString\ProcessUrl.cs" />
+    <Compile Include="Module\Recaptcha\GoogleRecaptchaHandler.cs" />
+    <Compile Include="Module\SecurityHeader\ProcessHeader.cs" />
+    <Compile Include="Module\Validation\SafeValidator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\script\plugins.min.js" />
+    <Content Include="Content\script\sitecore-safe.js" />
     <Content Include="Global.asax" />
     <Content Include="App_Config\Modules\Sitecore_Safe\Sitecore.Safe.config" />
-    <None Include="Common\Settings\Sitecore-SafeUrl.json" />
+    <None Include="Settings\Sitecore-SafeUrl.json" />
+    <Content Include="Views\Layout\Test.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -174,7 +178,10 @@
     </Content>
     <Content Include="Views\Web.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Content\style\" />
+    <Folder Include="Models\Settings\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Views\SitecoreSafe\Setup.cshtml" />

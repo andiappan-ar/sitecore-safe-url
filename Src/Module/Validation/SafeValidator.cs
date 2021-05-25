@@ -1,5 +1,5 @@
-﻿using Sitecore.Safe.Common.Helper;
-using Sitecore.Safe.Models;
+﻿using Sitecore.Safe.Models;
+using Sitecore.Safe.Settings;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
