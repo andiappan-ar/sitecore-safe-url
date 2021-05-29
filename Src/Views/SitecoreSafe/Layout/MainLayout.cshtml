@@ -3,14 +3,16 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <title>Sitecore safe</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="viewport" content="width=device-width , initial-scale=1" />
     <!-- Bootstrap CSS -->
-    <link href="~/sitecore modules/SitecoreSafe/style/plugin.css" rel="stylesheet" />
 
-    <title>Sitecore safe</title>
+    <link href="~/sitecore modules/SitecoreSafe/style/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/sitecore modules/SitecoreSafe/style/jsgrid.min.css" rel="stylesheet" />
+    <link href="~/sitecore modules/SitecoreSafe/style/jsgrid-theme.min.css" rel="stylesheet" />
+    <link href="~/sitecore modules/SitecoreSafe/style/sitecore-safe.css" rel="stylesheet" />
 </head>
 <body>
     <!-- Optional JavaScript; choose one of the two! -->
@@ -18,7 +20,10 @@
     <div class="container">
         @Html.Sitecore().Placeholder("SitecoreSafe")
     </div>
-    <script src="~/sitecore modules/SitecoreSafe/script/plugins.min.js"></script>
+
+    <script src="~/sitecore modules/SitecoreSafe/script/jquery-3.6.0.min.js"></script>
+    <script src="~/sitecore modules/SitecoreSafe/script/bootstrap.min.js"></script>
+    <script src="~/sitecore modules/SitecoreSafe/script/jsgrid.min.js"></script>
     <script src="~/sitecore modules/SitecoreSafe/script/sitecore-safe.js"></script>
     <script src="~/sitecore modules/SitecoreSafe/script/test.js"></script>
 </body>

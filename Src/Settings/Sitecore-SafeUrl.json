@@ -4,9 +4,17 @@
   },
   "SitecoreSafeUrl": {
     "Configurations": {
-
+      "Urls": [
+        {
+          "Domain": "https://arsc.dev.local/",
+          "Port":"" },
+        {
+          "Domain": "https://arsc.dev.local/",
+          "Port": ""
+        }
+      ]
     },
-    "Modules": {
+    "Modules": 
       "QueryString": {
         "Common": [
           {

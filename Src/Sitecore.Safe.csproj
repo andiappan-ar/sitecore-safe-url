@@ -167,13 +167,20 @@
     <Compile Include="Module\SafeValidation\SafeCharMatchValidator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="sitecore modules\SitecoreSafe\script\bootstrap.min.js" />
+    <Content Include="sitecore modules\SitecoreSafe\script\jquery-3.6.0.min.js" />
+    <Content Include="sitecore modules\SitecoreSafe\script\jsgrid.min.js" />
     <Content Include="sitecore modules\SitecoreSafe\script\plugins.min.js" />
     <Content Include="sitecore modules\SitecoreSafe\script\sitecore-safe.js" />
     <Content Include="sitecore modules\SitecoreSafe\script\test.js" />
-    <Content Include="sitecore modules\SitecoreSafe\style\plugin.css" />
+    <Content Include="sitecore modules\SitecoreSafe\style\bootstrap.min.css" />
+    <Content Include="sitecore modules\SitecoreSafe\style\jsgrid-theme.min.css" />
+    <Content Include="sitecore modules\SitecoreSafe\style\jsgrid.min.css" />
+    <Content Include="sitecore modules\SitecoreSafe\style\plugin.min.css" />
     <Content Include="Global.asax" />
     <Content Include="App_Config\Modules\Sitecore_Safe\Sitecore.Safe.config" />
     <None Include="Settings\Sitecore-SafeUrl.json" />
+    <Content Include="sitecore modules\SitecoreSafe\style\sitecore-safe.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
