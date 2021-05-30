@@ -10,11 +10,11 @@
                     "Port": 443
                 },
                 {
-                    "Domain": "arsc2.dev.local",
-                    "Port": 0
+                    "Domain": "arsc1.dev.local",
+                    "Port": 443
                 },
                 {
-                    "Domain": "arsc4.dev.local",
+                    "Domain": "arsc.dev.local",
                     "Port": 8446
                 }
             ]
@@ -23,24 +23,24 @@
             "QueryString": {
                 "Common": [
                     {
-                        "Urls": ["https://arsc.dev.local1/", "https://arsc1.dev.local/"],
+                        "Urls": [0,1],
                         "ThreatCharacters": "<>",
                         "ThreatPageId": "{76B024D8-0F6A-4A46-B588-E5E6BE275E42}"
                     },
                     {
-                        "Urls": ["https://arsc2.dev.local/"],
+                        "Urls": [1],
                         "ThreatCharacters": "<>",
                         "ThreatPageId": "{76B024D8-0F6A-4A46-B588-E5E6BE275E42}"
                     }
                 ],
                 "AllSites": [
                     {
-                        "Url": "https://arsc.dev.local1/",
+                        "Url":0,
                         "ThreatCharacters": "*",
                         "ThreatPageId": "{93947600-304A-4935-A49D-199D6AB2D7C9}"
                     },
                     {
-                        "Url": "https://xp0cm1.localhost/",
+                        "Url":0,
                         "ThreatCharacters": "<>",
                         "ThreatPageId": ""
                     }
@@ -49,7 +49,7 @@
             "SecurityHeader": {
                 "Common": [
                     {
-                        "Urls": ["https://arsc.dev.local1/", "https://arsc1.dev.local/"],
+                        "Urls": [0,1,2],
                         "Headers": [
                             {
                                 "HeaderName": "Content-Security-Policy",
@@ -60,7 +60,7 @@
                         ]
                     },
                     {
-                        "Urls": ["https://arsc.dev.local1/"],
+                        "Urls": [0,1],
                         "Headers": [
                             {
                                 "HeaderName": "X-Frame-Options",
@@ -79,7 +79,7 @@
                 ],
                 "AllSites": [
                     {
-                        "Url": "https://arsc.dev.local1/",
+                        "Url": 0,
                         "Headers": [
                             {
                                 "HeaderName": "Content-Security-Policy",
@@ -99,7 +99,7 @@
                         ]
                     },
                     {
-                        "Url": "https://xp0cm1.localhost/",
+                        "Url": 0,
                         "Headers": [
                             {
                                 "HeaderName": "value",
@@ -169,30 +169,41 @@ var SitecoreSafe = (function () {
                         sorting: true,
                         inserting:true,
                         paging: true,
-                        pageSize:5,
-                        deleteConfirm: function (args) {
-                            
-                        },
-                        onItemInserting: function (args) {
-
+                        pageSize:5,                        
+                        onItemInserting: function (args) {                            
+                            // Is unique check
                             if (!SitecoreSafe.Helpers.IsUniqueURL(args.item, "Domain", "Port", _settings.SitecoreSafeUrl.Configurations.Urls)) {
                                 args.cancel = true;
                                 alert("Entered Domain should not be empty / Domain & port should not be duplicated.");
                             }
+                            _settings.SitecoreSafeUrl.Configurations.Urls = $("#url-config-grid").jsGrid("option", "data");
                         },
                         onItemUpdating: function (args) {
-
+                            // Is edit made
+                            if (args.item.Domain.toLowerCase() === args.previousItem.Domain.toLowerCase() && args.item.Port === args.previousItem.Port) {
+                                args.cancel = true;
+                                alert("No changes been made.");
+                            } else
+                            // Is unique check
                             if (!SitecoreSafe.Helpers.IsUniqueURL(args.item, "Domain", "Port", _settings.SitecoreSafeUrl.Configurations.Urls)) {
                                 args.cancel = true;
                                 alert("Entered Domain should not be empty / Domain & port should not be duplicated.");
-                            }
+                                }
+                            _settings.SitecoreSafeUrl.Configurations.Urls = $("#url-config-grid").jsGrid("option", "data");
                         },
-                        onItemDeleting: function (args) {
-                            debugger;
-                            // cancel deletion of the item with 'protected' field
-                            if (args.item.protected) {
+                        onItemDeleting: function (args) {                            
+                            var deletedItemIndex = args.itemIndex;
+                            var urlKey = "Urls";
+                            // Check the item present in other settings
+                            if (SitecoreSafe.Helpers.IsUrlIndexPresentInCommonSettings(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.QueryString.Common, urlKey)
+                                ||
+                                SitecoreSafe.Helpers.IsUrlIndexPresentInCommonSettings(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.SecurityHeader.Common, urlKey)
+                            ) {
                                 args.cancel = true;
+                                alert("This item cant be delete, its used in common settings.");
                             }
+
+                            _settings.SitecoreSafeUrl.Configurations.Urls = $("#url-config-grid").jsGrid("option", "data");
                         },
                         data: _settings.SitecoreSafeUrl.Configurations.Urls,
                         fields: [
@@ -233,6 +244,16 @@ var SitecoreSafe = (function () {
                     }
                 }
                 else { result = false; }
+                return result;
+            },
+            IsUrlIndexPresentInCommonSettings: function (deletedItemIndex,source, urlKey) {
+                var result = false;
+               
+                for (var index = 0; index < source.length; ++index) {
+                    var loopedObj = source[index];
+                    if (loopedObj[urlKey].indexOf(deletedItemIndex) !== -1) { result = true; break; }
+                }
+
                 return result;
             }
         },
