@@ -20,27 +20,27 @@ namespace Sitecore.Safe.Security.SafeValidation
             bool isInvalid = false;
             string isInvalidErr = string.Empty;
 
-            if (value != null)
-            {
-                string valStr = value.ToString();
+            //if (value != null)
+            //{
+            //    string valStr = value.ToString();
 
-                SafeValidationAttribute invalidCharValidator = SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.SafeValidationAttributes.CharacterMatch
-                    .Where(x => string.Equals(x.key, keyAttribute, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+            //    SafeValidationAttribute invalidCharValidator = SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.SafeValidationAttributes.CharacterMatch
+            //        .Where(x => string.Equals(x.key, keyAttribute, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
 
-                if (invalidCharValidator != null)
-                {
-                    foreach (char @char in valStr)
-                    {
-                        if (invalidCharValidator.value.IndexOf(@char) != -1)
-                        {
-                            isInvalid = true;
-                            isInvalidErr = invalidCharValidator.ErrorMessage;
-                            break;
-                        }
-                    }
-                }               
+            //    if (invalidCharValidator != null)
+            //    {
+            //        foreach (char @char in valStr)
+            //        {
+            //            if (invalidCharValidator.value.IndexOf(@char) != -1)
+            //            {
+            //                isInvalid = true;
+            //                isInvalidErr = invalidCharValidator.ErrorMessage;
+            //                break;
+            //            }
+            //        }
+            //    }               
 
-            }
+            //}
 
             if (!isInvalid)
             {

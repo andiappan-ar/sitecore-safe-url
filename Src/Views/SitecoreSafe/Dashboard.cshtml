@@ -1,5 +1,5 @@
 ﻿<!--Navigation menu-->
-<div class="row py-5">
+<div class="row py-5 pt-5">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="configuration-tab" data-bs-toggle="tab" data-bs-target="#configuration" type="button" role="tab" aria-controls="configuration" aria-selected="true">
@@ -38,15 +38,8 @@
                         </button>
                     </h2>
                     <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">URL configuration</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">Sites all url.</h6>
-                                    <p class="card-text">This configrations will used in across all other settings.Please enter url with respective port details.</p>                                    
-                                </div>
-                            </div>
-                            <div id="url-config-grid"></div>
+                        <div class="accordion-body">                           
+                            <div id="url-config-grid" class="py-5 pt-5"></div>
                         </div>
                     </div>
                 </div>                
@@ -64,8 +57,8 @@
                         </button>
                     </h2>
                     <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body">
-
+                        <div class="accordion-body">                          
+                            <div id="url-group-grid" class="py-5 pt-5"></div>
                         </div>
                     </div>
                 </div>
@@ -73,12 +66,19 @@
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-headingTwo">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                            Url specific setting
+                            Domain specific setting
                         </button>
                     </h2>
                     <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
                         <div class="accordion-body">
-
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"></h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">Domain specific setting.</h6>
+                                    <p class="card-text"></p>
+                                </div>
+                            </div>
+                            <div id="url-domain-grid" class="py-5 pt-5"></div>
                         </div>
                     </div>
                 </div>

@@ -13,7 +13,7 @@ namespace Sitecore.Safe.Logger
 
         static SitecoreSafeLog()
         {
-            Logger = Sitecore.Diagnostics.LoggerFactory.GetLogger(SitecoreSafeConstant.LogAppender);
+            Logger = Diagnostics.LoggerFactory.GetLogger(SitecoreSafeConstant.LogAppender);
         }
 
         public static void Info(string message)

@@ -18,9 +18,5 @@ namespace Sitecore.Safe.Models
         string ThreatCharacters { get; set; }
         string ThreatPageId { get; set; }
     }
-
-    public interface ISecurityHeader
-    {
-        List<SitecoreSafeSecurityHeader> Headers { get; set; }
-    }
+   
 }

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sitecore.Configuration;
 
 namespace Sitecore.Safe.Common.Helper
 {
@@ -11,7 +10,7 @@ namespace Sitecore.Safe.Common.Helper
         private static List<string> SitesToIgnoreSettings = null;
         static SitecoreHelper()
         {
-            SitesToIgnoreSettings = Sitecore.Configuration.Settings.GetSetting(SitecoreSafeConstant.IgnoreSites, string.Empty)
+            SitesToIgnoreSettings = Configuration.Settings.GetSetting(SitecoreSafeConstant.IgnoreSites, string.Empty)
                 .ToLowerInvariant()
                 .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                 .ToList<string>();
@@ -24,7 +23,7 @@ namespace Sitecore.Safe.Common.Helper
             try
             {
                 //Request to perform when site is not Equal to sitecore default sites. (EDITED)
-                result = (Context.Site!=null && Sitecore.Context.PageMode.IsNormal && !SitesToIgnoreSettings.Contains(Context.Site.Name.ToLowerInvariant()));
+                result = (Context.Site!=null && Context.PageMode.IsNormal && !SitesToIgnoreSettings.Contains(Context.Site.Name.ToLowerInvariant()));
                 
             }
             catch (Exception error)

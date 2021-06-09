@@ -3,7 +3,7 @@
         "SitecoreVersion": "10.1"
     },
     "SitecoreSafeUrl": {
-        "Configurations": {
+        "Configs": {
             "Urls": [
                 {
                     "Domain": "arsc.dev.local",
@@ -44,10 +44,10 @@
             ]
         },
         "Modules": {
-            "QueryString": {
+            "QueryUrl": {
                 "Common": [
                     {
-                        "Urls": [0, 1,3,4,7,8],
+                        "Urls": [0, 1, 3, 4, 7, 8],
                         "ThreatCharacters": "<>",
                         "ThreatPageId": "{76B024D8-0F6A-4A46-B588-E5E6BE275E42}"
                     },
@@ -179,12 +179,27 @@
 };
 
 
+var sfConfig = {
+    Const: {
+        Domain: "Domain",
+        Port: "Port",
+        UrlGridId: "#url-config-grid",
+        Url: "Urls",
+        ThreatCharacters: "ThreatCharacters",
+        ThreatPageId: "ThreatPageId",
+        MultiSelectUrl:"MultiSelectUrl",
+        SettingsUrlCommonGridId: "#url-config-grid",
+        SettingsUrlDomainGridId: "#url-group-grid"
+    }
+};
+
+
 var SitecoreSafe = (function () {
     return {
-        Configuration: {
+        Config: {           
             JsGrid: {
-                GridConfigurationUrl: {
-                    Id: "#url-config-grid",
+                ConfigUrl: {
+                    Id: sfConfig.Const.UrlGridId,
                     GridAttr: {
                         width: "100%",
                         height: "400px",
@@ -196,11 +211,11 @@ var SitecoreSafe = (function () {
                         pageSize: 5,
                         onItemInserting: function (args) {
                             // Is unique check
-                            if (!SitecoreSafe.Helpers.IsUniqueURL(args.item, "Domain", "Port", _settings.SitecoreSafeUrl.Configurations.Urls)) {
+                            if (!SitecoreSafe.Helpers.IsUniqueURL(args.item, sfConfig.Const.Domain, sfConfig.Const.Port, _settings.SitecoreSafeUrl.Configs.Urls)) {
                                 args.cancel = true;
-                                alert("Entered Domain should not be empty / Domain & port should not be duplicated.");
+                                alert("Entered Domain or Port should not be empty / Domain & port should not be duplicated.");
                             }
-                            _settings.SitecoreSafeUrl.Configurations.Urls = $("#url-config-grid").jsGrid("option", "data");
+                            _settings.SitecoreSafeUrl.Configs.Urls = $(sfConfig.Const.UrlGridId).jsGrid("option", "data");
                         },
                         onItemUpdating: function (args) {
                             // Is edit made
@@ -209,17 +224,17 @@ var SitecoreSafe = (function () {
                                 alert("No changes been made.");
                             } else
                                 // Is unique check
-                                if (!SitecoreSafe.Helpers.IsUniqueURL(args.item, "Domain", "Port", _settings.SitecoreSafeUrl.Configurations.Urls)) {
+                                if (!SitecoreSafe.Helpers.IsUniqueURL(args.item, sfConfig.Const.Domain, sfConfig.Const.Port, _settings.SitecoreSafeUrl.Configs.Urls)) {
                                     args.cancel = true;
                                     alert("Entered Domain should not be empty / Domain & port should not be duplicated.");
                                 }
-                            _settings.SitecoreSafeUrl.Configurations.Urls = $("#url-config-grid").jsGrid("option", "data");
+                            _settings.SitecoreSafeUrl.Configs.Urls = $(sfConfig.Const.UrlGridId).jsGrid("option", "data");
                         },
                         onItemDeleting: function (args) {
                             var deletedItemIndex = args.itemIndex;
-                            var urlKey = "Urls";                            
+                            var urlKey = sfConfig.Const.Url;                            
                             // Check the item present in other settings
-                            if (SitecoreSafe.Helpers.IsUrlIndexPresentInCommonSettings(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.QueryString.Common, urlKey)
+                            if (SitecoreSafe.Helpers.IsUrlIndexPresentInCommonSettings(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.QueryUrl.Common, urlKey)
                                 ||
                                 SitecoreSafe.Helpers.IsUrlIndexPresentInCommonSettings(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.SecurityHeader.Common, urlKey)
                             ) {
@@ -228,7 +243,7 @@ var SitecoreSafe = (function () {
                             }
                             else
                                 // Check the item present in other settings
-                                if (SitecoreSafe.Helpers.IsUrlIndexPresentInDomainSpecificSettings(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.QueryString.AllSites, urlKey)
+                                if (SitecoreSafe.Helpers.IsUrlIndexPresentInDomainSpecificSettings(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.QueryUrl.AllSites, urlKey)
                                     ||
                                     SitecoreSafe.Helpers.IsUrlIndexPresentInDomainSpecificSettings(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.SecurityHeader.AllSites, urlKey)
                                 ) {
@@ -237,15 +252,15 @@ var SitecoreSafe = (function () {
                                 }
 
 
-                            _settings.SitecoreSafeUrl.Configurations.Urls = $("#url-config-grid").jsGrid("option", "data");
+                            _settings.SitecoreSafeUrl.Configs.Urls = $(sfConfig.Const.UrlGridId).jsGrid("option", "data");
                         },
                         onItemDeleted: function (args) {
-                            var urlKey = "Urls";
+                            var urlKey = sfConfig.Const.Url;
                             var deletedItemIndex = args.itemIndex;
                             // Common settings URL id updation
-                            for (var index = 0; index < _settings.SitecoreSafeUrl.Modules.QueryString.Common.length; ++index) {
-                                _settings.SitecoreSafeUrl.Modules.QueryString.Common[index][urlKey] =
-                                    SitecoreSafe.Helpers.GetTheUpdatedUrlIndexAfterDelete(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.QueryString.Common[index][urlKey]);
+                            for (var index = 0; index < _settings.SitecoreSafeUrl.Modules.QueryUrl.Common.length; ++index) {
+                                _settings.SitecoreSafeUrl.Modules.QueryUrl.Common[index][urlKey] =
+                                    SitecoreSafe.Helpers.GetTheUpdatedUrlIndexAfterDelete(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.QueryUrl.Common[index][urlKey]);
                             }
 
                             for (var index = 0; index < _settings.SitecoreSafeUrl.Modules.SecurityHeader.Common.length; ++index) {
@@ -254,19 +269,196 @@ var SitecoreSafe = (function () {
                             }
                             // Domain specic settings URL id updation
                             urlKey = "Url";
-                            for (var index = 0; index < _settings.SitecoreSafeUrl.Modules.QueryString.AllSites.length; ++index) {
-                                var loopedValue = _settings.SitecoreSafeUrl.Modules.QueryString.AllSites[index][urlKey];
-                                _settings.SitecoreSafeUrl.Modules.QueryString.AllSites[index][urlKey] = (loopedValue > deletedItemIndex) ? loopedValue - 1 : loopedValue;
+                            for (var index = 0; index < _settings.SitecoreSafeUrl.Modules.QueryUrl.AllSites.length; ++index) {
+                                var loopedValue = _settings.SitecoreSafeUrl.Modules.QueryUrl.AllSites[index][urlKey];
+                                _settings.SitecoreSafeUrl.Modules.QueryUrl.AllSites[index][urlKey] = (loopedValue > deletedItemIndex) ? loopedValue - 1 : loopedValue;
                             }
                             for (var index = 0; index < _settings.SitecoreSafeUrl.Modules.SecurityHeader.AllSites.length; ++index) {
                                 var loopedValue = _settings.SitecoreSafeUrl.Modules.SecurityHeader.AllSites[index][urlKey];
                                 _settings.SitecoreSafeUrl.Modules.SecurityHeader.AllSites[index][urlKey] = (loopedValue > deletedItemIndex) ? loopedValue - 1 : loopedValue;
                             }
                         },
-                        data: _settings.SitecoreSafeUrl.Configurations.Urls,
+                        data: _settings.SitecoreSafeUrl.Configs.Urls,
                         fields: [
-                            { name: "Domain", type: "text", width: 100 },
-                            { name: "Port", type: "number", width: 10 },
+                            { name: sfConfig.Const.Domain, type: "text", width: 100 },
+                            { name: sfConfig.Const.Port, type: "number", width: 10 },
+                            { type: "control", width: 10 }
+                        ]
+                    }
+                },
+                SettingsUrlCommon: {
+                    Id: sfConfig.Const.SettingsUrlCommonGridId,
+                    GridAttr: {
+                        width: "100%",
+                        height: "400px",
+                        filtering: true,
+                        editing: true,
+                        sorting: true,
+                        inserting: true,
+                        paging:true,
+                        pageSize: 5,
+                        onItemInserting: function (args) {
+                            // Is unique check
+                            if (!SitecoreSafe.Helpers.IsUniqueURL(args.item, sfConfig.Const.Domain, sfConfig.Const.Port, _settings.SitecoreSafeUrl.Configs.Urls)) {
+                                args.cancel = true;
+                                alert("Entered Domain or Port should not be empty / Domain & port should not be duplicated.");
+                            }
+                            _settings.SitecoreSafeUrl.Configs.Urls = $(sfConfig.Const.SettingsUrlCommonGridId).jsGrid("option", "data");
+                        },
+                        onItemUpdating: function (args) {
+                            // Is edit made
+                            if (args.item.Domain.toLowerCase() === args.previousItem.Domain.toLowerCase() && args.item.Port === args.previousItem.Port) {
+                                args.cancel = true;
+                                alert("No changes been made.");
+                            } else
+                                // Is unique check
+                                if (!SitecoreSafe.Helpers.IsUniqueURL(args.item, sfConfig.Const.Domain, sfConfig.Const.Port, _settings.SitecoreSafeUrl.Configs.Urls)) {
+                                    args.cancel = true;
+                                    alert("Entered Domain should not be empty / Domain & port should not be duplicated.");
+                                }
+                            _settings.SitecoreSafeUrl.Configs.Urls = $(sfConfig.Const.SettingsUrlCommonGridId).jsGrid("option", "data");
+                        },
+                        onItemDeleting: function (args) {
+                            var deletedItemIndex = args.itemIndex;
+                            var urlKey = sfConfig.Const.Url;
+                            // Check the item present in other settings
+                            if (SitecoreSafe.Helpers.IsUrlIndexPresentInCommonSettings(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.QueryUrl.Common, urlKey)
+                                ||
+                                SitecoreSafe.Helpers.IsUrlIndexPresentInCommonSettings(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.SecurityHeader.Common, urlKey)
+                            ) {
+                                args.cancel = true;
+                                alert("This item cant be delete, its used in common settings.");
+                            }
+                            else
+                                // Check the item present in other settings
+                                if (SitecoreSafe.Helpers.IsUrlIndexPresentInDomainSpecificSettings(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.QueryUrl.AllSites, urlKey)
+                                    ||
+                                    SitecoreSafe.Helpers.IsUrlIndexPresentInDomainSpecificSettings(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.SecurityHeader.AllSites, urlKey)
+                                ) {
+                                    args.cancel = true;
+                                    alert("This item cant be delete, its used in domain specific settings.");
+                                }
+
+
+                            _settings.SitecoreSafeUrl.Configs.Urls = $(sfConfig.Const.SettingsUrlCommonGridId).jsGrid("option", "data");
+                        },
+                        onItemDeleted: function (args) {
+                            var urlKey = sfConfig.Const.Url;
+                            var deletedItemIndex = args.itemIndex;
+                            // Common settings URL id updation
+                            for (var index = 0; index < _settings.SitecoreSafeUrl.Modules.QueryUrl.Common.length; ++index) {
+                                _settings.SitecoreSafeUrl.Modules.QueryUrl.Common[index][urlKey] =
+                                    SitecoreSafe.Helpers.GetTheUpdatedUrlIndexAfterDelete(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.QueryUrl.Common[index][urlKey]);
+                            }
+
+                            for (var index = 0; index < _settings.SitecoreSafeUrl.Modules.SecurityHeader.Common.length; ++index) {
+                                _settings.SitecoreSafeUrl.Modules.SecurityHeader.Common[index][urlKey] =
+                                    SitecoreSafe.Helpers.GetTheUpdatedUrlIndexAfterDelete(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.SecurityHeader.Common[index][urlKey]);
+                            }
+                            // Domain specic settings URL id updation
+                            urlKey = "Url";
+                            for (var index = 0; index < _settings.SitecoreSafeUrl.Modules.QueryUrl.AllSites.length; ++index) {
+                                var loopedValue = _settings.SitecoreSafeUrl.Modules.QueryUrl.AllSites[index][urlKey];
+                                _settings.SitecoreSafeUrl.Modules.QueryUrl.AllSites[index][urlKey] = (loopedValue > deletedItemIndex) ? loopedValue - 1 : loopedValue;
+                            }
+                            for (var index = 0; index < _settings.SitecoreSafeUrl.Modules.SecurityHeader.AllSites.length; ++index) {
+                                var loopedValue = _settings.SitecoreSafeUrl.Modules.SecurityHeader.AllSites[index][urlKey];
+                                _settings.SitecoreSafeUrl.Modules.SecurityHeader.AllSites[index][urlKey] = (loopedValue > deletedItemIndex) ? loopedValue - 1 : loopedValue;
+                            }
+                        },
+                        data: _settings.SitecoreSafeUrl.Modules.QueryUrl.Common,
+                        fields: [
+                            { name: sfConfig.Const.MultiSelectUrl, type: "multiselect", width: 100, align: "center" },
+                            { name: sfConfig.Const.ThreatCharacters, type: "text", width: 50 },
+                            { name: sfConfig.Const.ThreatPageId, type: "text", width: 50 },
+                            { type: "control", width: 10 }
+                        ]
+                    }
+                },
+                SettingsUrlDomain: {
+                    Id: sfConfig.Const.UrlGridId,
+                    GridAttr: {
+                        width: "100%",
+                        height: "400px",
+                        filtering: true,
+                        editing: true,
+                        sorting: true,
+                        inserting: true,
+
+                        pageSize: 5,
+                        onItemInserting: function (args) {
+                            // Is unique check
+                            if (!SitecoreSafe.Helpers.IsUniqueURL(args.item, sfConfig.Const.Domain, sfConfig.Const.Port, _settings.SitecoreSafeUrl.Configs.Urls)) {
+                                args.cancel = true;
+                                alert("Entered Domain or Port should not be empty / Domain & port should not be duplicated.");
+                            }
+                            _settings.SitecoreSafeUrl.Configs.Urls = $(sfConfig.Const.UrlGridId).jsGrid("option", "data");
+                        },
+                        onItemUpdating: function (args) {
+                            // Is edit made
+                            if (args.item.Domain.toLowerCase() === args.previousItem.Domain.toLowerCase() && args.item.Port === args.previousItem.Port) {
+                                args.cancel = true;
+                                alert("No changes been made.");
+                            } else
+                                // Is unique check
+                                if (!SitecoreSafe.Helpers.IsUniqueURL(args.item, sfConfig.Const.Domain, sfConfig.Const.Port, _settings.SitecoreSafeUrl.Configs.Urls)) {
+                                    args.cancel = true;
+                                    alert("Entered Domain should not be empty / Domain & port should not be duplicated.");
+                                }
+                            _settings.SitecoreSafeUrl.Configs.Urls = $(sfConfig.Const.UrlGridId).jsGrid("option", "data");
+                        },
+                        onItemDeleting: function (args) {
+                            var deletedItemIndex = args.itemIndex;
+                            var urlKey = sfConfig.Const.Url;
+                            // Check the item present in other settings
+                            if (SitecoreSafe.Helpers.IsUrlIndexPresentInCommonSettings(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.QueryUrl.Common, urlKey)
+                                ||
+                                SitecoreSafe.Helpers.IsUrlIndexPresentInCommonSettings(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.SecurityHeader.Common, urlKey)
+                            ) {
+                                args.cancel = true;
+                                alert("This item cant be delete, its used in common settings.");
+                            }
+                            else
+                                // Check the item present in other settings
+                                if (SitecoreSafe.Helpers.IsUrlIndexPresentInDomainSpecificSettings(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.QueryUrl.AllSites, urlKey)
+                                    ||
+                                    SitecoreSafe.Helpers.IsUrlIndexPresentInDomainSpecificSettings(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.SecurityHeader.AllSites, urlKey)
+                                ) {
+                                    args.cancel = true;
+                                    alert("This item cant be delete, its used in domain specific settings.");
+                                }
+
+
+                            _settings.SitecoreSafeUrl.Configs.Urls = $(sfConfig.Const.UrlGridId).jsGrid("option", "data");
+                        },
+                        onItemDeleted: function (args) {
+                            var urlKey = sfConfig.Const.Url;
+                            var deletedItemIndex = args.itemIndex;
+                            // Common settings URL id updation
+                            for (var index = 0; index < _settings.SitecoreSafeUrl.Modules.QueryUrl.Common.length; ++index) {
+                                _settings.SitecoreSafeUrl.Modules.QueryUrl.Common[index][urlKey] =
+                                    SitecoreSafe.Helpers.GetTheUpdatedUrlIndexAfterDelete(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.QueryUrl.Common[index][urlKey]);
+                            }
+
+                            for (var index = 0; index < _settings.SitecoreSafeUrl.Modules.SecurityHeader.Common.length; ++index) {
+                                _settings.SitecoreSafeUrl.Modules.SecurityHeader.Common[index][urlKey] =
+                                    SitecoreSafe.Helpers.GetTheUpdatedUrlIndexAfterDelete(deletedItemIndex, _settings.SitecoreSafeUrl.Modules.SecurityHeader.Common[index][urlKey]);
+                            }
+                            // Domain specic settings URL id updation
+                            urlKey = "Url";
+                            for (var index = 0; index < _settings.SitecoreSafeUrl.Modules.QueryUrl.AllSites.length; ++index) {
+                                var loopedValue = _settings.SitecoreSafeUrl.Modules.QueryUrl.AllSites[index][urlKey];
+                                _settings.SitecoreSafeUrl.Modules.QueryUrl.AllSites[index][urlKey] = (loopedValue > deletedItemIndex) ? loopedValue - 1 : loopedValue;
+                            }
+                            for (var index = 0; index < _settings.SitecoreSafeUrl.Modules.SecurityHeader.AllSites.length; ++index) {
+                                var loopedValue = _settings.SitecoreSafeUrl.Modules.SecurityHeader.AllSites[index][urlKey];
+                                _settings.SitecoreSafeUrl.Modules.SecurityHeader.AllSites[index][urlKey] = (loopedValue > deletedItemIndex) ? loopedValue - 1 : loopedValue;
+                            }
+                        },
+                        data: _settings.SitecoreSafeUrl.Configs.Urls,
+                        fields: [
+                            { name: sfConfig.Const.Domain, type: "text", width: 100 },
+                            { name: sfConfig.Const.Port, type: "number", width: 10 },
                             { type: "control", width: 50 }
                         ]
                     }
@@ -280,11 +472,14 @@ var SitecoreSafe = (function () {
 
             JsGrid: {
                 Init: function () {
-                    SitecoreSafe.Module.JsGrid.InitJsGrid(SitecoreSafe.Configuration.JsGrid.GridConfigurationUrl);
+                    SitecoreSafe.Module.JsGrid.InitJsGrid(SitecoreSafe.Config.JsGrid.ConfigUrl);
+                    SitecoreSafe.Helpers.InitiateMultiSelectUrl();
+                    SitecoreSafe.Module.JsGrid.InitJsGrid(SitecoreSafe.Config.JsGrid.SettingsUrlCommon);
+                    SitecoreSafe.Module.JsGrid.InitJsGrid(SitecoreSafe.Config.JsGrid.SettingsUrlDomain);
                 },
-                InitJsGrid: function (gridConfiguration) {
+                InitJsGrid: function (gridConfig) {
                     // Init grid
-                    $(gridConfiguration.Id).jsGrid(gridConfiguration.GridAttr);
+                    $(gridConfig.Id).jsGrid(gridConfig.GridAttr);
                 }
             }
         },
@@ -340,6 +535,27 @@ var SitecoreSafe = (function () {
                 }
                                
                 return result;
+            },
+            InitiateMultiSelectUrl: function () {
+                var multiSelect = [];
+
+                $(_settings.SitecoreSafeUrl.Configs.Urls).each(function (index) {
+                    var tempItem = { Name: this.Domain + ":" + this.Port, Value: index };
+                    multiSelect.push(tempItem);
+                });
+
+                // Assign multi select value
+                for (var index = 0; index < _settings.SitecoreSafeUrl.Modules.QueryUrl.Common.length; ++index) {
+                    var copiedObject = jQuery.extend(true, {}, multiSelect);
+                    var sourceIndex = _settings.SitecoreSafeUrl.Modules.QueryUrl.Common[index];
+                    $(copiedObject).each(function (indexInner) {
+                        // Make select if its available
+                        copiedObject[indexInner].Selected =
+                            (sourceIndex.Urls.indexOf(indexInner) !== -1)? true:false;
+                       
+                    });
+                }               
+
             }
         },
         EventHalndler: {
@@ -347,11 +563,87 @@ var SitecoreSafe = (function () {
 
             },
 
+        },
+        Extention: function () {
+          
         }
     }
 
 })();
 
 $(document).ready(function () {
+    SitecoreSafe.Extention();
+    var MultiselectField = function (config) {
+        jsGrid.Field.call(this, config);
+    };
+
+    MultiselectField.prototype = new jsGrid.Field({
+
+        items: [],
+        textField: "",
+
+        itemTemplate: function (value) {
+            return $.makeArray(value).join(", ");
+        },
+
+        _createSelect: function (selected) {
+            var textField = this.textField;
+            var $result = $("<select>").prop("multiple", true);
+
+            var _indx = 0;
+            $.each(this.items, function (_, item) {
+                var value = item[textField];
+                var $opt = $("<option>").text(value);
+                $opt.attr("value", _indx);
+                if ($.inArray(value, selected) > -1) {
+                    $opt.attr("selected", "selected");
+                }
+
+                $result.append($opt);
+                _indx++;
+            });
+
+            return $result;
+        },
+
+        insertTemplate: function () {
+            var insertControl = this._insertControl = this._createSelect();
+
+            setTimeout(function () {
+                insertControl.multiselect({
+                    minWidth: 140
+                });
+            });
+
+            return insertControl;
+        },
+
+        editTemplate: function (value) {
+            var editControl = this._editControl = this._createSelect(value);
+
+            setTimeout(function () {
+                editControl.multiselect({
+                    minWidth: 140
+                });
+            });
+
+            return editControl;
+        },
+
+        insertValue: function () {
+            return this._insertControl.find("option:selected").map(function () {
+                return this.selected ? $(this).text() : null;
+            });
+        },
+
+        editValue: function () {
+            return this._editControl.find("option:selected").map(function () {
+                return this.selected ? $(this).text() : null;
+            });
+        }
+
+    });
+
+    jsGrid.fields.multiselect = MultiselectField;
     SitecoreSafe.Init();
 });
