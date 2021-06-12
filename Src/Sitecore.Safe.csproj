@@ -143,7 +143,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\ISitecoreSafeRoot.cs" />
+    <Compile Include="Common\Helper\PatternValidator.cs" />
+    <Compile Include="Models\ISitecoreSafeSettings.cs" />
     <Compile Include="Models\Module\QueryStringThreat.cs" />
     <Compile Include="Models\Test\TestForm.cs" />
     <Compile Include="Module\SafeValidation\SafeRegexValidator.cs" />
@@ -164,24 +165,11 @@
     <Compile Include="Module\QueryString\ProcessUrl.cs" />
     <Compile Include="Module\Recaptcha\GoogleRecaptchaHandler.cs" />
     <Compile Include="Module\SecurityHeader\ProcessHeader.cs" />
-    <Compile Include="Module\SafeValidation\SafeCharMatchValidator.cs" />
     <Compile Include="Sitecore\Events\SaveEvent.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="sitecore modules\SitecoreSafe\script\bootstrap.min.js" />
-    <Content Include="sitecore modules\SitecoreSafe\script\jquery-3.6.0.min.js" />
-    <Content Include="sitecore modules\SitecoreSafe\script\jsgrid.min.js" />
-    <Content Include="sitecore modules\SitecoreSafe\script\plugins.min.js" />
-    <Content Include="sitecore modules\SitecoreSafe\script\sitecore-safe.js" />
-    <Content Include="sitecore modules\SitecoreSafe\script\test.js" />
-    <Content Include="sitecore modules\SitecoreSafe\style\bootstrap.min.css" />
-    <Content Include="sitecore modules\SitecoreSafe\style\jsgrid-theme.min.css" />
-    <Content Include="sitecore modules\SitecoreSafe\style\jsgrid.min.css" />
-    <Content Include="sitecore modules\SitecoreSafe\style\plugin.min.css" />
     <Content Include="Global.asax" />
     <Content Include="App_Config\Modules\Sitecore_Safe\Sitecore.Safe.config" />
-    <None Include="Common\Settings\Sitecore-SafeUrl.json" />
-    <Content Include="sitecore modules\SitecoreSafe\style\sitecore-safe.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -189,14 +177,10 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
-    <Content Include="Views\SitecoreSafe\TestForm.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
-    <Content Include="Views\SitecoreSafe\Dashboard.cshtml" />
-    <Content Include="Views\SitecoreSafe\Layout\MainLayout.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

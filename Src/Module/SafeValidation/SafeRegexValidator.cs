@@ -1,4 +1,5 @@
-﻿using Sitecore.Safe.Models;
+﻿using Sitecore.Safe.Common.Helper;
+using Sitecore.Safe.Models;
 using Sitecore.Safe.Settings;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -25,14 +26,14 @@ namespace Sitecore.Safe.Security.SafeValidation
             {
                 string valStr = value.ToString();
 
-                //SafeValidationAttribute regexAttr = SitecoreSafeSettings.JsonSettings.SitecoreSafeUrl.Modules.SafeValidationAttributes.Regex
-                //    .Where(x => string.Equals(x.key, keyAttribute, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                Pattern regexAttr = SitecoreSafeSettingsService.Settings.ValidationSettings.AllSettings
+                    .Where(x => string.Equals(x.key, keyAttribute, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
 
-                //if (regexAttr != null && !Regex.Match(valStr, regexAttr.value).Success)
-                //{
-                //    isInvalid = true;
-                //    isInvalidErr = regexAttr.ErrorMessage;
-                //}
+                if (regexAttr != null && PatternValidator.IsValidString(valStr, regexAttr.key,regexAttr.value))
+                {
+                    isInvalid = true;
+                    isInvalidErr = regexAttr.ErrorMessage;
+                }
 
             }
 

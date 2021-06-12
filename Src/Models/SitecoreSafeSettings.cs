@@ -37,7 +37,7 @@ namespace Sitecore.Safe.Models
     /// Url threat settings
     /// </summary>
     /// 
-    public class UrlThreat
+    public class UrlThreat : IUrlListKeyCollection , IUrlKeyCollection, IQueryStringThreat
     {
         public string ThreatDetails { get; set; }
         public string ThreatPageId { get; set; }
@@ -56,7 +56,7 @@ namespace Sitecore.Safe.Models
     /// <summary>
     /// Header
     /// </summary>
-    public class HeaderDetail
+    public class HeaderDetail: IUrlListKeyCollection, IUrlKeyCollection
     {
         public string HeaderName { get; set; }
         public string HeaderValue { get; set; }

@@ -9,18 +9,21 @@ namespace Sitecore.Safe.Common.Helper
 {
     public static class Utility
     {
-        public static bool IsUrlAndPortMatching(Uri sourceUrl, string testUrlString)
+        public static bool IsUrlAndPortMatching(Uri sourceUrl, string domainAndPort)
         {
             bool result = false;
 
             try
             {
-                Uri testUrl = new Uri(testUrlString);
-
-                result = (
-                    string.Equals(sourceUrl.Host, testUrl.Host,StringComparison.InvariantCultureIgnoreCase) &&
-                    string.Equals(sourceUrl.Port.ToString(), testUrl.Port.ToString(), StringComparison.InvariantCultureIgnoreCase)
+                string[] urlInfo = domainAndPort.Split(':');
+                if (urlInfo.Length > 1)
+                {
+                    result = (
+                    string.Equals(sourceUrl.Host, urlInfo.FirstOrDefault(), StringComparison.InvariantCultureIgnoreCase) &&
+                    string.Equals(sourceUrl.Port.ToString(), urlInfo.LastOrDefault(), StringComparison.InvariantCultureIgnoreCase)
                     );
+                }
+                
             }
             catch(Exception error)
             {
@@ -69,7 +72,7 @@ namespace Sitecore.Safe.Common.Helper
             try
             {
                 itemList.ForEach(urlGroup=> {
-                    var isUrlMatched = urlGroup.Urls.Any(x => IsUrlAndPortMatching(sourceUrl, x));
+                    var isUrlMatched = urlGroup.Urls.Any(x => IsUrlAndPortMatching(sourceUrl, x.DomainAndPort));
                     if (isUrlMatched)
                     {
                         result.Add(urlGroup);

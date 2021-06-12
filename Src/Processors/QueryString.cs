@@ -14,12 +14,12 @@ namespace Sitecore.Safe.Processors
     {
         public override void Process(HttpRequestArgs args)
         {
-            SitecoreSafeSettingsService.InitSettings();
-
             if (!SitecoreHelper.IsValidSiteForPipeline())
             {
                 return;
             }
+
+            SitecoreSafeSettingsService.InitSettings();
 
             var queryStringThreat = ProcessUrl.GetQueryStringThreat();
 

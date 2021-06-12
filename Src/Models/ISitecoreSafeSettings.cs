@@ -10,13 +10,15 @@ namespace Sitecore.Safe.Models
 
     public interface IUrlListKeyCollection
     {
-        List<string> Urls { get; set; }
+        List<Url> Urls { get; set; }
     }
 
     public interface IQueryStringThreat
     {
-        string ThreatCharacters { get; set; }
+        string ThreatDetails { get; set; }
         string ThreatPageId { get; set; }
+        string MatchingType { get; set; }
+
     }
-   
+
 }

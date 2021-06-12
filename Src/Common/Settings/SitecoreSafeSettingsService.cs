@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using Sitecore.Data;
+﻿using Sitecore.Data;
 using Sitecore.Data.Items;
 using Sitecore.Safe.Common;
 using Sitecore.Safe.Logger;
@@ -173,7 +172,7 @@ namespace Sitecore.Safe.Settings
                             null;
 
                         // DomainSpecific settings
-                        Item domainSpecificSettings = getChildItemByName(urlThreatSettings, "Group settings");
+                        Item domainSpecificSettings = getChildItemByName(urlThreatSettings, "Domain specific settings");
                         result.UrlThreatSettings.DomainSpecificSettings = (domainSpecificSettings != null) ?
                             domainSpecificSettings.Children.Select(x => new UrlThreat
                             {
@@ -198,7 +197,7 @@ namespace Sitecore.Safe.Settings
                             groupSettings.Children.Select(x => new HeaderDetail
                             {
                                 HeaderName = x.Fields["HeaderName"]?.Value,
-                                HeaderValue = x.Fields["HeaderName"]?.Value,
+                                HeaderValue = x.Fields["HeaderValue"]?.Value,
                                 IsAppend = getCheckBoxFieldValue(x, "IsAppend"),
                                 Urls = getUrlsFromMultiList(x, "Urls", "DomainAndPort")
                             }).ToList()
@@ -206,12 +205,12 @@ namespace Sitecore.Safe.Settings
                             null;
 
                         // DomainSpecific settings
-                        Item domainSpecificSettings = getChildItemByName(headerSettings, "Group settings");
+                        Item domainSpecificSettings = getChildItemByName(headerSettings, "Domain specific settings");
                         result.HeaderSettings.DomainSpecificSettings = (domainSpecificSettings != null) ?
                             domainSpecificSettings.Children.Select(x => new HeaderDetail
                             {
                                 HeaderName = x.Fields["HeaderName"]?.Value,
-                                HeaderValue = x.Fields["HeaderName"]?.Value,
+                                HeaderValue = x.Fields["HeaderValue"]?.Value,
                                 IsAppend = getCheckBoxFieldValue(x, "IsAppend"),
                                 Url = getTargetLinkStringFieldValue(x, "Url", "DomainAndPort")
                             }).ToList()
@@ -223,7 +222,8 @@ namespace Sitecore.Safe.Settings
                     Item validationAttributes = getChildItemByName(settings, "Validation Attributes");
                     if (validationAttributes != null)
                     {
-                        
+                        result.ValidationSettings = new Models.ValidationSettings() { };
+
                         result.ValidationSettings.AllSettings = (validationAttributes != null) ?
                             validationAttributes.Children.Select(x => new Pattern
                             {
