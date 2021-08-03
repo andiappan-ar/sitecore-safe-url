@@ -147,6 +147,7 @@
     <Compile Include="Models\ISitecoreSafeSettings.cs" />
     <Compile Include="Models\Module\QueryStringThreat.cs" />
     <Compile Include="Models\Test\TestForm.cs" />
+    <Compile Include="Module\SafeValidation\AntiforgeryTokenValidator.cs" />
     <Compile Include="Module\SafeValidation\SafeRegexValidator.cs" />
     <Compile Include="Common\Settings\SitecoreSafeSettingsService.cs" />
     <Compile Include="Common\Helper\SitecoreHelper.cs" />

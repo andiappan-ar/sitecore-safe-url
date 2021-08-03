@@ -1,6 +1,7 @@
 ﻿using Sitecore.Mvc.Controllers;
 using Sitecore.Safe.Models.Test;
 using Sitecore.Safe.Security.Recaptcha;
+using Sitecore.Safe.Security.SafeValidation;
 using System.Web.Mvc;
 
 namespace Sitecore.Safe.Controllers
@@ -12,6 +13,7 @@ namespace Sitecore.Safe.Controllers
             return View();
         }
 
+        [AntiforgeryTokenValidator]
         [HttpPost]
         public bool TestForm(TestForm testForm)
         {
