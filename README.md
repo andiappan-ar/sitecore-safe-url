@@ -6,6 +6,7 @@ This project is a sample implementation of secure the Sitecore application URLS.
 * Safe URL
 * Google Recaptcha 
 * Request parameter protection 
+* Anti-forgery token validation
 
 # Quick introduction
 
@@ -62,6 +63,59 @@ Google recaptcha server side snippet will validate your google recaptcha respons
 Initiate the google recaptcha server side validation as showned below, Result is boolean true|false.
 ![image](https://user-images.githubusercontent.com/11770345/126045412-5269262c-94f4-40d6-a116-e113302bb623.png)
 
+
+##  Anti-forgery token</h4>
+
+
+<!-- wp:paragraph -->
+<p>This implementation is to prevent CSRF attacks and implement this as like in below article.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Implement first in client side , which place you need. This will generate token.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:syntaxhighlighter/code {"language":"xml"} -->
+<pre class="wp-block-syntaxhighlighter-code">&lt;!--Place this in your cshtml-->
+@Html.AntiForgeryToken()
+</pre>
+<!-- /wp:syntaxhighlighter/code -->
+
+<!-- wp:paragraph -->
+<p>In your DOM it will create token like below.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:syntaxhighlighter/code {"language":"xml"} -->
+<pre class="wp-block-syntaxhighlighter-code">&lt;!--Out put will be in your DOM-->
+&lt;input name="__RequestVerificationToken" type="hidden" value="SKEfZKpGsh_YuUWuhhtFdoIhJS7doYRoaf7iIFIr4EGy1bQu9nB5KsdAgSz8VVDyrwjtyGtEW5QvJXJwtcBZ0L_CgzqjVg_UdLagcDDFBs41"></pre>
+<!-- /wp:syntaxhighlighter/code -->
+
+<!-- wp:paragraph -->
+<p>Attach this token in request header. Where ever you are making API call.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":384,"sizeSlug":"large","linkDestination":"none","className":"is-style-default"} -->
+<figure class="wp-block-image size-large is-style-default"><img src="https://andisitecore.files.wordpress.com/2021/08/image-1.png?w=1024" alt="" class="wp-image-384"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>In server side validate it using authorization filter and decorate on top of your API action method.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph {"style":{"color":{"background":"#d0f1dc"}}} -->
+<p class="has-background" style="background-color:#d0f1dc">SRC :<a href="https://github.com/andiappan-ar/sitecore-safe-url/blob/main/Src/Module/SafeValidation/AntiforgeryTokenValidator.cs" target="_blank" rel="noreferrer noopener"> https://github.com/andiappan-ar/sitecore-safe-url/blob/main/Src/Module/SafeValidation/AntiforgeryTokenValidator.cs</a></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><em>Authorization filter:</em></p>
+<!-- /wp:paragraph -->
+
+![image](https://user-images.githubusercontent.com/11770345/128060050-bfb57f02-b3dd-4591-9fb9-d932905d1335.png)
+
+
+<!-- wp:paragraph -->
+<p>Decorate like this <strong><a href="https://github.com/andiappan-ar/sitecore-safe-url/blob/main/Src/Controllers/SitecoreSafeController.cs" data-type="URL" data-id="https://github.com/andiappan-ar/sitecore-safe-url/blob/main/Src/Controllers/SitecoreSafeController.cs" target="_blank" rel="noreferrer noopener">[AntiforgeryTokenValidator]</a></strong> on top of your action method.</p>
+<!-- /wp:paragraph -->
 
 ## Get started
 
