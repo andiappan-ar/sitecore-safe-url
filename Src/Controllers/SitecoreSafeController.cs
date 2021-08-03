@@ -18,7 +18,7 @@ namespace Sitecore.Safe.Controllers
         public bool TestForm(TestForm testForm)
         {
             bool isMOdelvalid = ModelState.IsValid;
-            bool recapValidation = GoogleRecaptchaHandler.ValidateGoogleRecaptchaResponse(testForm.RecaptchaResponse, "6LcG3e4aAAAAACx_-RIykooH2mSwFoxFz2MVo2cz", "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}");
+            bool recapValidation = GoogleRecaptchaHandler.ValidateGoogleRecaptchaResponse(testForm.RecaptchaResponse, "{Your secert key}", "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}");
             return (isMOdelvalid && recapValidation);
         }
     }
